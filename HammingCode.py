@@ -1,38 +1,26 @@
-def solving(data):
-    if len(data) == 3:
-        d3,d2,d1 = data
-        p1 = d1 ^ d2
-        p2 = d1 ^ d3
-        p3 = d2 ^ d3
-        result = [d3,d2,p3,d1,p2,p1]
+h = [0]*7
+for i in range(4):
+    h[i] = int(input(f"Data bits {i+1}: "))
+h[0] = h[2]^h[4]^h[6]
+h[1] = h[2]^h[5]^h[6]
+h[3] = h[4]^h[5]^h[6]
 
-        byte = str(p3) + str(p2) + str(p1)
-        return result,byte 
-    
-    elif len(data) == 4:
-        d4,d3,d2,d1 = data
-        p1 = d1 ^ d2 ^ d4
-        p2 = d1 ^ d3 ^ d4
-        p3 = d2 ^ d3 ^ d4
-        result = [d4,d3,d2,p3,d1,p2,p1]
+print(h)
 
-        byte = str(p3) + str(p2) + str(p1)
-        return result,byte 
-    
-    elif len(data) == 5:
-        d5,d4,d3,d2,d1 = data
-        p1 = d1 ^ d2 ^ d4 ^ d5
-        p2 = d1 ^ d3 ^ d4
-        p3 = d2 ^ d3 ^ d4
-        p4 = d5
-        result = [d5,p4,d4,d3,d2,p3,d1,p2,p1]
+print("Received data: ")
+r = [0]*7
+for i in range(7):
+    r[i] = int(input(f"Enter actual data{i+1}: "))
 
-        byte = str(p4) + str(p3) + str(p2) + str(p1)
-        return result,byte 
+p1 = r[0]^r[2]^r[4]^r[6]
+p2 = r[1]^r[2]^r[5]^r[6]
+p4 = r[3]^r[4]^r[5]^r[6]
 
-
-data = list(map(int,input("Enter data: ")))
-print(f"Actual Data - {data}")
-res, byt = solving(data)
-print(f"Hamming Code - {res}")
-print(f"Parity Code - {byt}")
+error = p1 + (2*p2) + (4*p4)
+if error == 0:
+    print("No error")
+else:
+    print(error)
+    r[error - 1]^=1
+print(h)     
+print(r)     
